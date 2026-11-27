@@ -17,23 +17,44 @@ const data = [
 ];
 
 const tableBody = document.getElementById("tableBody");
+const searchInput = document.getElementById("searchInput");
+const sortByName = document.getElementById("sortByName");
+let isAscending = true;
 function displayData(array) {
-
+    tableBody.innerHTML = "";
     array.forEach(coin => {
         const row = document.createElement("tr");
         const changeValue = parseFloat(coin.change);
         row.innerHTML = `
-            <td>${coin.name}</td>
-            <td>${coin.ticker}</td>
-            <td>$${coin.value}</td>
-            <td style="color: ${changeValue < 0 ? 'red' : 'green'}">
+            <td class="px-7 py-5">${coin.name}</td>
+            <td class="px-7 py-5">${coin.ticker}</td>
+            <td class="px-7 py-5">$${coin.value}</td>
+            <td class="px-7 py-5 font-semibold"
+                style="color: ${changeValue < 0 ? '#ef4444' : '#22c55e'}">
                 ${coin.change}
             </td>
         `;
-
         tableBody.appendChild(row);
-
     });
 }
-            displayData(data);
+searchInput.addEventListener("input", function () {
+    const searchValue = searchInput.value.toLowerCase();
+    const filteredData = data.filter(coin => {
+        return coin.name.toLowerCase().includes(searchValue) ||
+               coin.ticker.toLowerCase().includes(searchValue);
+    });
 
+    displayData(filteredData);
+});
+sortByName.addEventListener("click", function () {
+    const sortedData = [...data].sort((a, b) => {
+        if (isAscending) {
+            return a.name.localeCompare(b.name);
+        } else {
+            return b.name.localeCompare(a.name);
+        }
+    });
+    isAscending = !isAscending;
+    displayData(sortedData);
+});
+displayData(data);
