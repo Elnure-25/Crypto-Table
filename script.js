@@ -47,7 +47,7 @@ searchInput.addEventListener("input", function () {
     displayData(filteredData);
 });
 sortByName.addEventListener("click", function () {
-    const sortedData = [...data].sort((a, b) => {
+    const sortedData = [data].sort((a, b) => {
         if (isAscending) {
             return a.name.localeCompare(b.name);
         } else {
